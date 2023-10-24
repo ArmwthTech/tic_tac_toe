@@ -2,6 +2,7 @@ import random
 
 
 def greet():
+    # Функция для печати приветствия и
     print("-------------------")
     print("  Приветсвуем вас  ")
     print("      в игре       ")
@@ -13,7 +14,7 @@ def greet():
 
 
 def print_board(board):
-    # Функция для печати текущего состояния игровой доски
+    # Функция для печати текущего состояния игрового поля
     print("  1 2 3")
     for i in range(3):
         print(f"{i + 1} {' '.join(board[i])}")
@@ -44,26 +45,26 @@ def is_board_full(board):
 def get_user_move():
     # Получение хода от пользователя
     while True:
-        row_input = input("Введите номер строки (1, 2, 3) или нажмите Enter для выхода: ")
-        if row_input == '':
-            return None, None
-        try:
-            row = int(row_input) - 1
-            break
-        except ValueError:
-            print("Некорректный ввод. Пожалуйста, введите число.")
+        cords = input("Ваш ход:").split()
 
-    while True:
-        col_input = input("Введите номер столбца (1, 2, 3) или нажмите Enter для выхода: ")
-        if col_input == '':
-            return None, None
-        try:
-            col = int(col_input) - 1
-            break
-        except ValueError:
-            print("Некорректный ввод. Пожалуйста, введите число.")
+        if len(cords) != 2:
+            print(" Введите 2 координаты! ")
+            continue
 
-    return row, col
+        row, col = cords
+
+        if not (row.isdigit()) or not (col.isdigit()):
+            print(" Введите числа! ")
+            continue
+
+        row, col = int(row), int(col)
+
+        if 0 > row or row > 3 or 0 > col or col > 3:
+            print(" Координаты вне диапазона! ")
+            continue
+        break
+
+    return row-1, col-1
 
 
 def get_computer_move(board):
@@ -75,10 +76,10 @@ def get_computer_move(board):
 def tic_tac_toe():
     # Основная функция для игры в крестики-нолики
     board = [['-' for _ in range(3)] for _ in range(3)]
+    count = 0
 
     while True:
         print_board(board)
-
         # Выбор режима игры
         while True:
             choice = input("Выберите режим игры (1 - с компьютером, 2 - с другим игроком): ")
@@ -94,8 +95,10 @@ def tic_tac_toe():
             print_board(board)
 
             if current_player == 'X' or (current_player == 'O' and choice == '2'):
+                print(f'Ходит {current_player}')
                 row, col = get_user_move()
             else:
+                print(f'Ходит {current_player}')
                 row, col = get_computer_move(board)
 
             if row is None or col is None:
@@ -121,7 +124,7 @@ def tic_tac_toe():
             current_player = player_symbols[1] if current_player == player_symbols[0] else player_symbols[0]
 
 
+
 if __name__ == "__main__":
     greet()
-    #asd
     tic_tac_toe()
